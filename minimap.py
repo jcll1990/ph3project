@@ -3,26 +3,21 @@ from map import *
 from settings import *
 
 
-
-
 class Minimap:
-    def __init__(self,game):
+    def __init__(self, game):
         self.game = game
         self.minimap = self.game.map.world_map
-
-    
-
-
+        self.y_pos = 0
 
     def minimap_pos(self):
         max_y = max(key[1] for key in self.minimap.keys())
-        y_pos = HEIGHT - (max_y*10)
-        return y_pos
-
+        a = HEIGHT - (max_y * 12) - 100
+        self.y_pos = a
+        return self.y_pos
 
     def draw(self):
-        y_pos = self.minimap_pos()  # Calculate y_pos using the minimap_pos method
-        for pos, value in self.minimap.items():
-            x, y = pos  # Extract x and y components from the tuple
-            pg.draw.rect(self.game.screen, 'white', (x * 10, (y_pos + y * 10), 10, 10), 1)
+        self.minimap_pos()  
+        [pg.draw.rect(self.game.screen, 'white', (pos[0]*12, self.y_pos + pos[1]*12, 12, 12), 1)
+        for pos in self.minimap]
+
     

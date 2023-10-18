@@ -1,6 +1,8 @@
 from settings import * 
 import pygame as pg
 import math
+from minimap import *
+
 
 class Player:
     def __init__(self,game):
@@ -14,6 +16,7 @@ class Player:
         self.time_prev = pg.time.get_ticks()
         # diagonal movement correction
         self.diag_move_corr = 1 / math.sqrt(2)
+        self.y_pos = self.game.minimap.y_pos
 
     def recover_health(self):
         if self.check_health_recovery_delay() and self.health < PLAYER_MAX_HEALTH:
@@ -34,6 +37,7 @@ class Player:
             self.game.object_renderer.game_over()
             pg.display.flip()
             pg.time.delay(1500)
+            self.game.alive_npcs = -1
             self.game.new_game()
 
     def get_damage(self, damage):
@@ -87,12 +91,16 @@ class Player:
 
 
     def draw(self): 
-        pg.draw.line(self.game.screen, "yellow", (self.x * 100, self.y*100), #this draws a yellow line for the 2d map
-                    (self.x * 100 + WIDTH * math.cos(self.angle),
-                     self.y * 100 + WIDTH * math.sin(self.angle)),2)
+        self.y_pos = self.game.minimap.minimap_pos()
+        pg.draw.line(self.game.screen, 
+                     "green", 
+                     (self.x * 12, (self.y_pos + self.y *12)),
+                     (self.x * 12 + 15 * math.cos(self.angle),   (self.y_pos + self.y *12)  + 15 * math.sin(self.angle)),
+                     3)
         
-
-        pg.draw.circle(self.game.screen, 'green', (self.x * 100, self.y *100), 15) #this draws the player as a circle in the 2D game
+       
+ 
+        pg.draw.circle(self.game.screen, 'green', (self.x * 12, (self.y_pos + self.y *12)), 5) #this draws the player as a circle in the 2D game
 
     def mouse_control(self):
         mx, my = pg.mouse.get_pos()

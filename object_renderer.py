@@ -34,6 +34,11 @@ class ObjectRenderer:
             self.screen.blit(self.digits[char], (i * self.digit_size, 0))
         self.screen.blit(self.digits['10'], ((i + 1) * self.digit_size, 0))
 
+        alive_npcs = str(self.game.alive_npcs)
+        for i, char in enumerate(alive_npcs):
+            self.screen.blit(self.digits[char], (i * self.digit_size, 100))
+       
+
     def player_damage(self):
         self.screen.blit(self.blood_screen, (0, 0))
 

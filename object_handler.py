@@ -3,6 +3,7 @@ from npc import *
 from random import choices, randrange
 
 
+
 class ObjectHandler:
     def __init__(self, game):
         self.game = game
@@ -16,7 +17,7 @@ class ObjectHandler:
         self.npc_positions = {}
 
         # spawn npc
-        self.enemies = 20  # npc count
+        
         self.npc_types = [SoldierNPC, CacoDemonNPC, CyberDemonNPC]
         self.weights = [70, 20, 10]
         self.restricted_area = {(i, j) for i in range(10) for j in range(10)}
@@ -57,7 +58,7 @@ class ObjectHandler:
         # add_npc(CyberDemonNPC(game, pos=(14.5, 25.5)))
 
     def spawn_npc(self):
-        for i in range(self.enemies):
+        for i in range(self.game.enemies):
                 npc = choices(self.npc_types, self.weights)[0]
                 pos = x, y = randrange(self.game.map.cols), randrange(self.game.map.rows)
                 while (pos in self.game.map.world_map) or (pos in self.restricted_area):
@@ -69,7 +70,9 @@ class ObjectHandler:
             self.game.object_renderer.win()
             pg.display.flip()
             pg.time.delay(1500)
+            self.game.alive_npcs = -1
             self.game.new_game()
+
 
     def update(self):
         self.npc_positions = {npc.map_pos for npc in self.npc_list if npc.alive}

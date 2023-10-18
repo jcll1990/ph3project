@@ -1,5 +1,6 @@
 from sprite_object import *
 from random import randint, random
+from minimap import *
 
 
 class NPC(AnimatedSprite):
@@ -19,16 +20,19 @@ class NPC(AnimatedSprite):
         self.attack_damage = 10
         self.accuracy = 0.15
         self.alive = True
+        self.game.alive_npcs += 1
         self.pain = False
         self.ray_cast_value = False
         self.frame_counter = 0
         self.player_search_trigger = False
+        self.y_pos = self.game.minimap.y_pos
 
     def update(self):
         self.check_animation_time()
         self.get_sprite()
         self.run_logic()
-        # self.draw_ray_cast()
+ 
+        self.draw_ray_cast()
 
     def check_wall(self, x, y):
         return (x, y) not in self.game.map.world_map
@@ -38,6 +42,7 @@ class NPC(AnimatedSprite):
             self.x += dx
         if self.check_wall(int(self.x), int(self.y + dy * self.size)):
             self.y += dy
+        return self.x, self.y
 
     def movement(self):
         next_pos = self.game.pathfinding.get_path(self.map_pos, self.game.player.map_pos)
@@ -79,6 +84,7 @@ class NPC(AnimatedSprite):
 
     def check_health(self):
         if self.health < 1:
+            self.game.alive_npcs -=1
             self.alive = False
             self.game.sound.npc_death.play()
 
@@ -178,10 +184,12 @@ class NPC(AnimatedSprite):
         return False
 
     def draw_ray_cast(self):
-        pg.draw.circle(self.game.screen, 'red', (100 * self.x, 100 * self.y), 15)
-        if self.ray_cast_player_npc():
-            pg.draw.line(self.game.screen, 'orange', (100 * self.game.player.x, 100 * self.game.player.y),
-                         (100 * self.x, 100 * self.y), 2)
+        self.y_pos = self.game.minimap.minimap_pos()
+        if self.alive:
+            pg.draw.circle(self.game.screen, 'red', (self.x * 12, (self.y_pos + self.y *12)), 5)
+       # if self.ray_cast_player_npc():
+        #    pg.draw.line(self.game.screen, 'orange', (100 * self.game.player.x, 100 * self.game.player.y),
+         #                (100 * self.x, 100 * self.y), 2)
 
 
 class SoldierNPC(NPC):

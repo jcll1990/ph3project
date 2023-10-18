@@ -11,9 +11,14 @@ from weapon import *
 from sound import *
 from pathfinder import *
 from minimap import *
+from npc import *
 
+
+ 
 class Game:
     def __init__(self):
+
+
         pg.init()
 #       pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode(RES)
@@ -23,11 +28,13 @@ class Game:
         self.global_trigger = False
         self.global_event = pg.USEREVENT + 0
         pg.time.set_timer(self.global_event, 40 )
-
+        self.alive_npcs = -1
+        self.enemies = 1
 
         self.new_game()
  
     def new_game(self):
+        self.enemies = 50
         self.map = Map(self)
         self.minimap = Minimap(self)
         self.player = Player(self)
@@ -37,6 +44,7 @@ class Game:
         self.weapon = Weapon(self)
         self.sound = Sound(self)
         self.pathfinding = PathFinding(self)
+        self.npc = NPC(self)
         pg.mixer.music.play(-1)
 
     def update(self):
@@ -46,7 +54,8 @@ class Game:
         self.weapon.update()
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
-        pg.display.set_caption(f'{self.player.angle}')
+        pg.display.set_caption(f'Player X: {self.player.x} - Player Y: {self.player.y}')
+
 
 
     def draw(self):
@@ -54,8 +63,9 @@ class Game:
         self.weapon.draw()
         self.minimap.draw()
 #        self.map.draw()
-#        self.player.draw()  
-
+        self.player.draw()  
+        
+      
     def check_events(self):
         self.global_trigger = False
         for event in pg.event.get():
