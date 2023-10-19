@@ -2,7 +2,7 @@ import pygame as pg
 from settings import *
 import os
 from collections import deque
-
+ 
 
 class SpriteObject:
     def __init__(self, game, path='resources/sprites/static_sprites/candlebra.png',

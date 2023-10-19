@@ -16,7 +16,7 @@ class ObjectHandler:
         add_npc = self.add_npc
         self.npc_positions = {}
 
-        # spawn npc
+        # spawn npc 
         
         self.npc_types = [SoldierNPC, CacoDemonNPC, CyberDemonNPC]
         self.weights = [70, 20, 10]

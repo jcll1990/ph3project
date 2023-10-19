@@ -22,6 +22,7 @@ class Game:
         pg.init()
 #       pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode(RES)
+        pg.event.set_grab(True)
         self.clock = pg.time.Clock()
         
         self.delta_time = 1
@@ -73,8 +74,9 @@ class Game:
                 pg.quit()
                 sys.exit()
             elif event.type == self.global_event:
-                    self.global_trigger = True
+                self.global_trigger = True
             self.player.single_fire_event(event)
+
 
     def run(self):
         while True:
