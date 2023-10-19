@@ -2,6 +2,7 @@ from settings import *
 import pygame as pg
 import math
 from minimap import *
+from weapon import *
 
 
 class Player:
@@ -17,6 +18,7 @@ class Player:
         # diagonal movement correction
         self.diag_move_corr = 1 / math.sqrt(2)
         self.y_pos = self.game.minimap.y_pos
+
 
     def recover_health(self):
         if self.check_health_recovery_delay() and self.health < PLAYER_MAX_HEALTH:
@@ -44,11 +46,20 @@ class Player:
 
 
     def single_fire_event(self, event):
-        if event.type == pg.MOUSEBUTTONDOWN:
-            if event.button ==1 and not self.shot and not self.game.weapon.reloading:
-                self.game.sound.shotgun.play()
-                self.shot = True 
-                self.game.weapon.reloading = True
+        if self.game.weapon.key == 1:
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button ==1 and not self.shot and not self.game.weapon.reloading:
+                    self.game.sound.shotgun.play()
+                    self.shot = True 
+                    self.game.weapon.reloading = True
+        elif self.game.weapon.key == 2:
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button ==1 and not self.shot and not self.game.weapon.reloading:
+                    self.game.sound.melee.set_volume(5.0)
+                    self.game.sound.melee.play()
+                    self.shot = True 
+                    self.game.weapon.reloading = True
+
 
     def movement(self):
         sin_a = math.sin(self.angle)

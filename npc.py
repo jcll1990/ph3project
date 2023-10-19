@@ -16,7 +16,7 @@ class NPC(AnimatedSprite):
         self.attack_dist = randint(3, 6)
         self.speed = 0.03
         self.size = 20
-        self.health = 100
+        self.health = 200
         self.attack_damage = 10
         self.accuracy = 0.15
         self.alive = True
@@ -64,8 +64,8 @@ class NPC(AnimatedSprite):
     def animate_death(self):
         if not self.alive:
             if self.game.global_trigger and self.frame_counter < len(self.death_images) - 1:
-                self.death_images.rotate(-1)
-                self.image = self.death_images[0]
+                self.death_images.rotate(+1)
+                self.image = self.death_images[5]
                 self.frame_counter += 1
 
     def animate_pain(self):
