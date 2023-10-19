@@ -31,7 +31,7 @@ class Weapon:
         if keys[pg.K_2]:
             self.key=2
             self.get_images()
-            self.damage = 500
+            self.damage = 100
 
     def get_images(self):
 

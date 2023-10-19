@@ -3,6 +3,7 @@ from random import randint, random
 from minimap import *
 
 
+
 class NPC(AnimatedSprite):
     def __init__(self, game, path='resources/sprites/npc/soldier/0.png', pos=(10.5, 5.5),
                  scale=0.6, shift=0.38, animation_time=180):
@@ -74,7 +75,15 @@ class NPC(AnimatedSprite):
             self.pain = False
 
     def check_hit_in_npc(self):
-        if self.ray_cast_value and self.game.player.shot:
+        if self.game.weapon.key ==2 and self.ray_cast_value and self.game.player.shot and self.x -1.2 < self.game.player.x < self.x +1.2 and  self.y -1.2 < self.game.player.y < self.y +1.2 :
+            if HALF_WIDTH - self.sprite_half_width < self.screen_x < HALF_WIDTH + self.sprite_half_width:
+                self.game.sound.npc_pain.play()
+                self.game.player.shot = False
+                self.pain = True
+                self.health -= self.game.weapon.damage
+                self.check_health()
+
+        elif self.game.weapon.key ==1 and self.ray_cast_value and self.game.player.shot:
             if HALF_WIDTH - self.sprite_half_width < self.screen_x < HALF_WIDTH + self.sprite_half_width:
                 self.game.sound.npc_pain.play()
                 self.game.player.shot = False
@@ -83,7 +92,7 @@ class NPC(AnimatedSprite):
                 self.check_health()
 
     def check_health(self):
-        if self.health < 1:
+        if self.health < 1: 
             self.game.alive_npcs -=1
             self.alive = False
             self.game.sound.npc_death.play()
@@ -192,7 +201,7 @@ class NPC(AnimatedSprite):
          #                (100 * self.x, 100 * self.y), 2)
 
 
-class SoldierNPC(NPC):
+class DemonNPC(NPC):
     def __init__(self, game, path='resources/sprites/npc/soldier/0.png', pos=(10.5, 5.5),
                  scale=0.6, shift=0.38, animation_time=180):
         super().__init__(game, path, pos, scale, shift, animation_time)
