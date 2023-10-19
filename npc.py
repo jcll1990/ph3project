@@ -66,7 +66,7 @@ class NPC(AnimatedSprite):
         if not self.alive:
             if self.game.global_trigger and self.frame_counter < len(self.death_images) - 1:
                 self.death_images.rotate(+1)
-                self.image = self.death_images[5]
+                self.image = self.death_images[3]
                 self.frame_counter += 1
 
     def animate_pain(self):
@@ -201,7 +201,7 @@ class NPC(AnimatedSprite):
          #                (100 * self.x, 100 * self.y), 2)
 
 
-class DemonNPC(NPC):
+class SoldierNPC(NPC):
     def __init__(self, game, path='resources/sprites/npc/soldier/0.png', pos=(10.5, 5.5),
                  scale=0.6, shift=0.38, animation_time=180):
         super().__init__(game, path, pos, scale, shift, animation_time)
@@ -212,6 +212,7 @@ class CacoDemonNPC(NPC):
         super().__init__(game, path, pos, scale, shift, animation_time)
         self.attack_dist = 1.0
         self.health = 150
+        
         self.attack_damage = 25
         self.speed = 0.05
         self.accuracy = 0.35
